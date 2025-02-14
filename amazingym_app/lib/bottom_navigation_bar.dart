@@ -35,7 +35,7 @@ class _NavigationExampleState extends State<NavigationExample> {
           style: TextStyle(fontSize: 24, color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: const Color.fromARGB(255, 245, 2, 2),
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
@@ -43,7 +43,7 @@ class _NavigationExampleState extends State<NavigationExample> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.blue,
         selectedIndex: currentPageIndex,
         destinations: const <NavigationDestination>[
           NavigationDestination(
@@ -79,42 +79,50 @@ class _NavigationExampleState extends State<NavigationExample> {
 }
 
 class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
         'Home Page Content',
-        style: TextStyle(fontSize: 24, color: Colors.deepOrange),
+        style: TextStyle(fontSize: 24, color: Colors.redAccent),
       ),
     );
   }
 }
 
 class WorkoutsContent extends StatelessWidget {
+  const WorkoutsContent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
         'Workouts Page Content',
-        style: TextStyle(fontSize: 24, color: Colors.deepOrange),
+        style: TextStyle(fontSize: 24, color: Colors.redAccent),
       ),
     );
   }
 }
 
 class ProfileContent extends StatelessWidget {
+  const ProfileContent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
         'Profile Page Content',
-        style: TextStyle(fontSize: 24, color: Colors.deepOrange),
+        style: TextStyle(fontSize: 24, color: Colors.redAccent),
       ),
     );
   }
 }
 
 class FaceScanContent extends StatelessWidget {
+  const FaceScanContent({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -124,7 +132,7 @@ class FaceScanContent extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Colors.deepOrange,
+              color: Colors.redAccent,
             ),
             padding: EdgeInsets.all(20),
             child: Icon(
@@ -136,7 +144,7 @@ class FaceScanContent extends StatelessWidget {
           SizedBox(height: 20),
           Text(
             'Face Scan Page Content',
-            style: TextStyle(fontSize: 24, color: Colors.deepOrange),
+            style: TextStyle(fontSize: 24, color: Colors.redAccent),
           ),
         ],
       ),
