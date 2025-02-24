@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 
 /// Flutter code sample for [NavigationBar].
 
-void main() => runApp(const NavigationBarApp());
-
 class NavigationBarApp extends StatelessWidget {
   const NavigationBarApp({super.key});
 
@@ -61,18 +59,12 @@ class _NavigationExampleState extends State<NavigationExample> {
             icon: Icon(Icons.person_outline),
             label: 'Profile',
           ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.camera_alt),
-            icon: Icon(Icons.camera_alt_outlined),
-            label: 'Face Scan',
-          ),
         ],
       ),
       body: <Widget>[
         HomeContent(),
         WorkoutsContent(),
         ProfileContent(),
-        FaceScanContent(),
       ][currentPageIndex],
     );
   }
@@ -115,38 +107,6 @@ class ProfileContent extends StatelessWidget {
       child: Text(
         'Profile Page Content',
         style: TextStyle(fontSize: 24, color: Colors.redAccent),
-      ),
-    );
-  }
-}
-
-class FaceScanContent extends StatelessWidget {
-  const FaceScanContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.redAccent,
-            ),
-            padding: EdgeInsets.all(20),
-            child: Icon(
-              Icons.camera_alt,
-              size: 50,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Face Scan Page Content',
-            style: TextStyle(fontSize: 24, color: Colors.redAccent),
-          ),
-        ],
       ),
     );
   }

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "221809095307",
+    "project_id": "amazingym-mo",
+    "storage_bucket": "amazingym-mo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221809095307:android:cac417692ba80fa2135a8e",
+        "android_client_info": {
+          "package_name": "com.SWD392_MO.AmazinGym"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221809095307-bk1fu9lga8fjtcj5c5h2qtf8q8c3c2vq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADH6MtKuhseNu2cLDT7DzWDmzr6ufq6Ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221809095307-bk1fu9lga8fjtcj5c5h2qtf8q8c3c2vq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221809095307:android:b9db4fca07d20a8e135a8e",
+        "android_client_info": {
+          "package_name": "com.example.amazingym_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221809095307-bk1fu9lga8fjtcj5c5h2qtf8q8c3c2vq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADH6MtKuhseNu2cLDT7DzWDmzr6ufq6Ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221809095307-bk1fu9lga8fjtcj5c5h2qtf8q8c3c2vq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
