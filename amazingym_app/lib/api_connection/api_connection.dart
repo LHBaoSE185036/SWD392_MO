@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class ApiConnection {
-  static const String baseUrl = 'http://157.230.40.203:8080/gym-face-id-access/api/auth';
+  static const String baseUrl = 'http://157.230.40.203:8080/gym-face-id-access/api';
   final Dio _dio = Dio();
 
   ApiConnection() {
@@ -16,7 +16,7 @@ class ApiConnection {
 
   Future<String?> login(String username, String password) async {
     try {
-      Response response = await _dio.post('/login', data: {
+      Response response = await _dio.post('/auth/login', data: {
         "username": username,
         "password": password
       });
