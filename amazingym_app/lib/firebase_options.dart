@@ -87,4 +87,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'amazingym-mo.firebasestorage.app',
     measurementId: 'G-WW2CJSWJGX',
   );
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:amazingym_app/home.dart';
 
 /// Flutter code sample for [NavigationBar].
 
@@ -40,6 +41,12 @@ class _NavigationExampleState extends State<NavigationExample> {
           setState(() {
             currentPageIndex = index;
           });
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          }
         },
         indicatorColor: Colors.blue,
         selectedIndex: currentPageIndex,
@@ -62,24 +69,10 @@ class _NavigationExampleState extends State<NavigationExample> {
         ],
       ),
       body: <Widget>[
-        HomeContent(),
+        Container(),
         WorkoutsContent(),
         ProfileContent(),
       ][currentPageIndex],
-    );
-  }
-}
-
-class HomeContent extends StatelessWidget {
-  const HomeContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        'Home Page Content',
-        style: TextStyle(fontSize: 24, color: Colors.redAccent),
-      ),
     );
   }
 }
