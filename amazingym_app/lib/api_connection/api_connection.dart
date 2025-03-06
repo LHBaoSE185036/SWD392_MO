@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class API {
-  static const hostConnect = "http://157.230.40.203:8080/gym-face-id-access/api";
+  static const hostConnect =
+      "http://157.230.40.203:8080/gym-face-id-access/api/v1";
   static String? authToken;
 
   // Login method to get the token
@@ -18,7 +19,8 @@ class API {
       authToken = jsonResponse['data'];
       print('Login successful, token: $authToken');
     } else {
-      print('Failed to login, status code: ${response.statusCode}, body: ${utf8.decode(response.bodyBytes)}');
+      print(
+          'Failed to login, status code: ${response.statusCode}, body: ${utf8.decode(response.bodyBytes)}');
       throw Exception('Failed to login');
     }
   }
@@ -35,7 +37,8 @@ class API {
     );
 
     if (response.statusCode == 403) {
-      print('Access forbidden, status code: ${response.statusCode}, body: ${utf8.decode(response.bodyBytes)}');
+      print(
+          'Access forbidden, status code: ${response.statusCode}, body: ${utf8.decode(response.bodyBytes)}');
     }
 
     return response;

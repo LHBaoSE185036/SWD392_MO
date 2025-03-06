@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   Future<List<dynamic>> fetchCustomers() async {
-    final response = await API.getRequest('v1/customer/customers');
+    final response = await API.getRequest('customer/customers');
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonResponse['success'] == true) {
@@ -66,8 +66,8 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              CustomerDetailPage(customerId: customer['id']),
+                          builder: (context) => CustomerDetailPage(
+                              customerId: customer['customerId']),
                         ),
                       );
                     },

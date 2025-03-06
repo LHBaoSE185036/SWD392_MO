@@ -3,7 +3,7 @@ import 'package:amazingym_app/api_connection/api_connection.dart';
 import 'dart:convert';
 
 class CustomerDetailPage extends StatefulWidget {
-  final String customerId;
+  final int customerId;
 
   const CustomerDetailPage({Key? key, required this.customerId})
       : super(key: key);
@@ -21,8 +21,8 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
     customer = fetchCustomerDetails(widget.customerId);
   }
 
-  Future<Map<String, dynamic>> fetchCustomerDetails(String customerId) async {
-    final response = await API.getRequest('v1/customer/customer/$customerId');
+  Future<Map<String, dynamic>> fetchCustomerDetails(int customerId) async {
+    final response = await API.getRequest('customer/$customerId');
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonResponse['success'] == true) {
@@ -60,16 +60,16 @@ class _CustomerDetailPageState extends State<CustomerDetailPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Full Name: ${customer['fullName']}',
+                  Text('Full Name: ${customer['fullName'] ?? 'N/A'}',
                       style: TextStyle(fontSize: 18)),
                   SizedBox(height: 8),
-                  Text('Email: ${customer['email']}',
+                  Text('Email: ${customer['email'] ?? 'N/A'}',
                       style: TextStyle(fontSize: 18)),
                   SizedBox(height: 8),
-                  Text('Phone: ${customer['phoneNumber']}',
+                  Text('Phone: ${customer['phoneNumber'] ?? 'N/A'}',
                       style: TextStyle(fontSize: 18)),
                   SizedBox(height: 8),
-                  Text('Status: ${customer['status']}',
+                  Text('Status: ${customer['status'] ?? 'N/A'}',
                       style: TextStyle(fontSize: 18)),
                   SizedBox(height: 8),
                   customer['faceURL'] != null
