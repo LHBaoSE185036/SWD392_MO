@@ -1,0 +1,2 @@
+C:/Users/ASUS/Documents/GitHub/SWD392_MO/amazingym_app/android/app/.cxx/Debug/j2k4c6r1/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/ASUS/Documents/GitHub/SWD392_MO/amazingym_app/android/app/.cxx/Debug/j2k4c6r1/x86_64/CMakeFiles/rebuild_cache.dir
