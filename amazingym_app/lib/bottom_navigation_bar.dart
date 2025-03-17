@@ -58,7 +58,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         NavigationDestination(
           selectedIcon: Icon(Icons.person, color: Color.fromARGB(255, 0, 101, 3)),
           icon: Icon(Icons.person_outline, color: Colors.white),
-          label: 'Profile',
+          label: 'Active Member',
         ),
       ],
     );
