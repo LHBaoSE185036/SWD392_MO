@@ -1,3 +1,5 @@
+import 'package:amazingym_app/checkin_customer.dart';
+import 'package:amazingym_app/home.dart';
 import 'package:amazingym_app/login.dart';
 import 'package:amazingym_app/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,7 +15,8 @@ Future<void> main() async {
 
   final fcmToken = await FirebaseMessaging.instance.getToken();
   print("FCM Token: $fcmToken");
-  runApp(const MyApp());
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +26,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(useMaterial3: true),
-      home: const LoginPage(),
+      home: LoginPage(),
+      routes: {
+        '/home': (context) => HomePage(),
+        '/checkin-customers': (context) => CheckinCustomersPage(),
+      },
     );
   }
 }

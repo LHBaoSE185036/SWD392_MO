@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:amazingym_app/api_connection/sse_service.dart';
 
 class API {
   static const hostConnect =
       "http://157.230.40.203:8080/gym-face-id-access/api/v1";
   static String? authToken;
+  static SSEService? sseService;
 
   // Login method to get the token
   static Future<void> login(String username, String password) async {
@@ -18,11 +20,21 @@ class API {
       final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       authToken = jsonResponse['data'];
       print('Login successful, token: $authToken');
+      initializeSSE();
     } else {
       print(
           'Failed to login, status code: ${response.statusCode}, body: ${utf8.decode(response.bodyBytes)}');
       throw Exception('Failed to login');
     }
+  }
+
+  // Initialize SSE service
+  static void initializeSSE() {
+    sseService = SSEService(
+      '$hostConnect/customer/subscribe',
+      {'Authorization': 'Bearer ${authToken}'},
+    );
+    sseService!.startListening();
   }
 
   // GET request with token

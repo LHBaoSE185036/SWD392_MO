@@ -18,7 +18,6 @@ class NotificationService {
   bool isInitialized = false;
 
   Future<void> initialize() async {
-
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     //request permission
@@ -60,10 +59,12 @@ class NotificationService {
     );
 
     await _localNotifications
-    .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-    ?.createNotificationChannel(channel);
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
 
-    const initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
 
     //ios setup
     final initializationSettingsDarwin = DarwinInitializationSettings(
@@ -79,9 +80,9 @@ class NotificationService {
 
     //flutter notification setup
     await _localNotifications.initialize(
-      initializationSettings, 
+      initializationSettings,
       onDidReceiveBackgroundNotificationResponse: (details) {
-      print('Received background notification');
+        print('Received background notification');
       },
     );
 
@@ -96,7 +97,8 @@ class NotificationService {
         notification.hashCode,
         notification.title,
         notification.body,
-        NotificationDetails(android: AndroidNotificationDetails(
+        NotificationDetails(
+          android: AndroidNotificationDetails(
             'amazingym_channel',
             'AmazinGym Channel',
             channelDescription: 'Channel for AmazinGym notifications',
@@ -115,8 +117,38 @@ class NotificationService {
     }
   }
 
-  Future<void> setupMessageHandlers() async {
+  Future<void> showLocalNotification(
+      {required String title, required String body}) async {
+    const androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'amazingym_channel',
+      'AmazinGym Channel',
+      channelDescription: 'Channel for AmazinGym notifications',
+      importance: Importance.max,
+      priority: Priority.high,
+      icon: '@mipmap/ic_launcher',
+    );
 
+    const iOSPlatformChannelSpecifics = DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+
+    const platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await _localNotifications.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'item x',
+    );
+  }
+
+  Future<void> setupMessageHandlers() async {
     //foreground message
     FirebaseMessaging.onMessage.listen((message) {
       showNotification(message);
@@ -137,6 +169,4 @@ class NotificationService {
       //open chat screen
     }
   }
-
-
 }

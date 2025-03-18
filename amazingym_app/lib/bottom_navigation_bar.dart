@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:amazingym_app/home.dart';
 
 /// Custom AppBar for the app
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -40,6 +39,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     return NavigationBar(
       onDestinationSelected: (int index) {
         widget.onItemSelected(index);
+        _navigateToPage(index);
       },
       indicatorColor: Colors.green,
       backgroundColor: Colors.black,
@@ -51,16 +51,32 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
           label: 'Home',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.card_membership_rounded, color: Color.fromARGB(255, 0, 101, 3)),
+          selectedIcon: Icon(Icons.card_membership_rounded,
+              color: Color.fromARGB(255, 0, 101, 3)),
           icon: Icon(Icons.card_membership_outlined, color: Colors.white),
           label: 'Memberships',
         ),
         NavigationDestination(
-          selectedIcon: Icon(Icons.person, color: Color.fromARGB(255, 0, 101, 3)),
-          icon: Icon(Icons.person_outline, color: Colors.white),
-          label: 'Active Member',
+          selectedIcon:
+              Icon(Icons.check_circle, color: Color.fromARGB(255, 0, 101, 3)),
+          icon: Icon(Icons.check_circle_outline, color: Colors.white),
+          label: 'Check-In',
         ),
       ],
     );
+  }
+
+  void _navigateToPage(int index) {
+    switch (index) {
+      case 0:
+        Navigator.pushReplacementNamed(context, '/home');
+        break;
+      case 1:
+        //   Navigator.pushReplacementNamed(context, '/memberships');
+        //   break;
+        // case 2:
+        Navigator.pushReplacementNamed(context, '/checkin-customers');
+        break;
+    }
   }
 }

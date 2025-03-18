@@ -31,31 +31,16 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  /// Fetch danh sách khách hàng đang trong gym
-  Future<List<dynamic>> fetchActiveCustomers() async {
-    final response = await API.getRequest('customer/in-gym');
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-      if (jsonResponse['success'] == true) {
-        return jsonResponse['data'].where((customer) => customer['status'] == 'active').toList();
-      } else {
-        throw Exception('Failed to load active customers: ${jsonResponse['message']}');
-      }
-    } else {
-      throw Exception(
-          'Failed to load active customers, status code: ${response.statusCode}, body: ${response.body}');
-    }
-  }
-
   /// Fetch danh sách memberships
-    Future<List<dynamic>> fetchMemberships() async {
+  Future<List<dynamic>> fetchMemberships() async {
     final response = await API.getRequest('membership/memberships');
     if (response.statusCode == 200) {
       final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
       if (jsonResponse['success'] == true) {
         return jsonResponse['data'];
       } else {
-        throw Exception('Failed to load memberships: ${jsonResponse['message']}');
+        throw Exception(
+            'Failed to load memberships: ${jsonResponse['message']}');
       }
     } else {
       throw Exception(
@@ -79,7 +64,8 @@ class _HomePageState extends State<HomePage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel', style: TextStyle(color: Colors.white70)),
+              child:
+                  const Text('Cancel', style: TextStyle(color: Colors.white70)),
             ),
             TextButton(
               onPressed: () {
@@ -89,7 +75,8 @@ class _HomePageState extends State<HomePage> {
                   MaterialPageRoute(builder: (context) => const LoginPage()),
                 );
               },
-              child: const Text('Logout', style: TextStyle(color: Colors.redAccent)),
+              child: const Text('Logout',
+                  style: TextStyle(color: Colors.redAccent)),
             ),
           ],
         );
@@ -112,6 +99,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      body: _getPage(currentPageIndex),
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: currentPageIndex,
         onItemSelected: (index) {
@@ -120,7 +108,6 @@ class _HomePageState extends State<HomePage> {
           });
         },
       ),
-      body: _getPage(currentPageIndex),
     );
   }
 
@@ -130,8 +117,6 @@ class _HomePageState extends State<HomePage> {
         return _buildCustomerList();
       case 1:
         return MembershipsContent(fetchMemberships: fetchMemberships);
-      case 2:
-        return ActiveMemberContent(fetchActiveCustomers: fetchActiveCustomers);
       default:
         return _buildCustomerList();
     }
@@ -142,11 +127,16 @@ class _HomePageState extends State<HomePage> {
       future: fetchCustomers(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(color: Colors.green));
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.green));
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.white)));
+          return Center(
+              child: Text('Error: ${snapshot.error}',
+                  style: TextStyle(color: Colors.white)));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No customers found', style: TextStyle(color: Colors.white)));
+          return const Center(
+              child: Text('No customers found',
+                  style: TextStyle(color: Colors.white)));
         } else {
           return ListView.builder(
             itemCount: snapshot.data!.length,
@@ -156,14 +146,19 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black,
                 elevation: 5,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.green)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.green)),
                 child: ListTile(
-                  title: Text(customer['fullName'], style: const TextStyle(color: Colors.white)),
+                  title: Text(customer['fullName'],
+                      style: const TextStyle(color: Colors.white)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Email: ${customer['email']}', style: const TextStyle(color: Colors.white70)),
-                      Text('Phone: ${customer['phoneNumber']}', style: const TextStyle(color: Colors.white70)),
+                      Text('Email: ${customer['email']}',
+                          style: const TextStyle(color: Colors.white70)),
+                      Text('Phone: ${customer['phoneNumber']}',
+                          style: const TextStyle(color: Colors.white70)),
                     ],
                   ),
                   trailing: ElevatedButton(
@@ -192,113 +187,56 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
 class MembershipsContent extends StatelessWidget {
-    final Future<List<dynamic>> Function() fetchMemberships;
+  final Future<List<dynamic>> Function() fetchMemberships;
 
-    const MembershipsContent({super.key, required this.fetchMemberships});
-
-    @override
-    Widget build(BuildContext context) {
-      return FutureBuilder<List<dynamic>>(
-        future: fetchMemberships(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(color: Colors.green));
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.white)),
-            );
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
-              child: Text('No memberships found', style: TextStyle(color: Colors.white)),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                final membership = snapshot.data![index];
-                return Card(
-                  color: Colors.black,
-                  elevation: 5,
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.green)),
-                  child: ListTile(
-                    title: Text(membership['name'], style: const TextStyle(color: Colors.white)),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Type: ${membership['type']}', style: const TextStyle(color: Colors.white70)),
-                        Text('Description: ${membership['description']}', style: const TextStyle(color: Colors.white70)),
-                        Text('Price: ${membership['price']} VND', style: const TextStyle(color: Colors.white70)),
-                        Text('Duration: ${membership['duration']} days', style: const TextStyle(color: Colors.white70)),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
-          }
-        },
-      );
-    }
-  }
-
-
-class ActiveMemberContent extends StatelessWidget {
-  final Future<List<dynamic>> Function() fetchActiveCustomers;
-
-  const ActiveMemberContent({super.key, required this.fetchActiveCustomers});
+  const MembershipsContent({super.key, required this.fetchMemberships});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
-      future: fetchActiveCustomers(),
+      future: fetchMemberships(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator(color: Colors.green));
+          return const Center(
+              child: CircularProgressIndicator(color: Colors.green));
         } else if (snapshot.hasError) {
           return Center(
-            child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.white)),
+            child: Text('Error: ${snapshot.error}',
+                style: const TextStyle(color: Colors.white)),
           );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
-            child: Text('No active members in the gym', style: TextStyle(color: Colors.white)),
+            child: Text('No memberships found',
+                style: TextStyle(color: Colors.white)),
           );
         } else {
           return ListView.builder(
             itemCount: snapshot.data!.length,
             itemBuilder: (context, index) {
-              final customer = snapshot.data![index];
+              final membership = snapshot.data![index];
               return Card(
                 color: Colors.black,
                 elevation: 5,
                 margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Colors.green)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(color: Colors.green)),
                 child: ListTile(
-                  title: Text(customer['fullName'], style: const TextStyle(color: Colors.white)),
+                  title: Text(membership['name'],
+                      style: const TextStyle(color: Colors.white)),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Email: ${customer['email']}', style: const TextStyle(color: Colors.white70)),
-                      Text('Phone: ${customer['phoneNumber']}', style: const TextStyle(color: Colors.white70)),
+                      Text('Type: ${membership['type']}',
+                          style: const TextStyle(color: Colors.white70)),
+                      Text('Description: ${membership['description']}',
+                          style: const TextStyle(color: Colors.white70)),
+                      Text('Price: ${membership['price']} VND',
+                          style: const TextStyle(color: Colors.white70)),
+                      Text('Duration: ${membership['duration']} days',
+                          style: const TextStyle(color: Colors.white70)),
                     ],
-                  ),
-                  trailing: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.black,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CustomerDetailPage(
-                              customerId: customer['customerId']),
-                        ),
-                      );
-                    },
-                    child: const Text('Detail'),
                   ),
                 ),
               );
