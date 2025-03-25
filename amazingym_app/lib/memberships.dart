@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:amazingym_app/api_connection/api_connection.dart';
 import 'dart:convert';
 import 'package:amazingym_app/bottom_navigation_bar.dart';
+import 'package:amazingym_app/login.dart';
+
 
 class MembershipsPage extends StatefulWidget {
   const MembershipsPage({super.key});
@@ -11,7 +13,6 @@ class MembershipsPage extends StatefulWidget {
 }
 
 class _MembershipsPageState extends State<MembershipsPage> {
-  /// Fetch danh sách memberships
   Future<List<dynamic>> fetchMemberships() async {
     final response = await API.getRequest('membership/memberships');
     if (response.statusCode == 200) {
@@ -36,12 +37,54 @@ class _MembershipsPageState extends State<MembershipsPage> {
         backgroundColor: Colors.black,
         title: const Text('Memberships', style: TextStyle(color: Colors.green)),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.redAccent),
+            onPressed: _logout,
+          ),
+        ],
       ),
       body: _buildMembershipList(),
       bottomNavigationBar: CustomBottomNavBar(
         currentIndex: 1,
         onItemSelected: (index) {},
       ),
+    );
+  }
+
+  void _logout() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: const BorderSide(color: Colors.green),
+          ),
+          title: const Text('Logout', style: TextStyle(color: Colors.green)),
+          content: const Text('Are you sure you want to log out?',
+              style: TextStyle(color: Colors.white)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child:
+                  const Text('Cancel', style: TextStyle(color: Colors.white70)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
+              },
+              child: const Text('Logout',
+                  style: TextStyle(color: Colors.redAccent)),
+            ),
+          ],
+        );
+      },
     );
   }
 

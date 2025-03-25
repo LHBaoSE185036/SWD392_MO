@@ -3,6 +3,7 @@ import 'package:amazingym_app/api_connection/api_connection.dart';
 import 'package:amazingym_app/detail.dart';
 import 'dart:convert';
 import 'package:amazingym_app/bottom_navigation_bar.dart';
+import 'package:amazingym_app/login.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -51,7 +52,10 @@ class _HomePageState extends State<HomePage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushReplacementNamed(context, '/login');
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                );
               },
               child: const Text('Logout',
                   style: TextStyle(color: Colors.redAccent)),
