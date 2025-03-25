@@ -55,4 +55,27 @@ class API {
 
     return response;
   }
+
+  // POST request with token
+  static Future<http.Response> postRequest(String endpoint, Map<String, dynamic> body) async {
+  if (authToken == null) {
+    throw Exception('Auth token is null. Please login first.');
+  }
+
+  final response = await http.post(
+    Uri.parse('$hostConnect/$endpoint'),
+    headers: {
+      'Authorization': 'Bearer $authToken',
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(body),
+  );
+
+  if (response.statusCode == 403) {
+    print(
+        'Access forbidden, status code: ${response.statusCode}, body: ${utf8.decode(response.bodyBytes)}');
+  }
+
+  return response;
+}
 }

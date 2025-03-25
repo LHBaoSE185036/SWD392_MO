@@ -72,9 +72,9 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         Navigator.pushReplacementNamed(context, '/home');
         break;
       case 1:
-        //   Navigator.pushReplacementNamed(context, '/memberships');
-        //   break;
-        // case 2:
+          Navigator.pushReplacementNamed(context, '/memberships');
+          break;
+        case 2:
         Navigator.pushReplacementNamed(context, '/checkin-customers');
         break;
     }

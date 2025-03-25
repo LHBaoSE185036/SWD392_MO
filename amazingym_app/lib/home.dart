@@ -3,7 +3,7 @@ import 'package:amazingym_app/api_connection/api_connection.dart';
 import 'package:amazingym_app/detail.dart';
 import 'dart:convert';
 import 'package:amazingym_app/bottom_navigation_bar.dart';
-import 'package:amazingym_app/login.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,8 +13,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentPageIndex = 0;
-
   /// Fetch danh sách toàn bộ khách hàng
   Future<List<dynamic>> fetchCustomers() async {
     final response = await API.getRequest('customer/customers');
@@ -28,23 +26,6 @@ class _HomePageState extends State<HomePage> {
     } else {
       throw Exception(
           'Failed to load customers, status code: ${response.statusCode}, body: ${response.body}');
-    }
-  }
-
-  /// Fetch danh sách memberships
-  Future<List<dynamic>> fetchMemberships() async {
-    final response = await API.getRequest('membership/memberships');
-    if (response.statusCode == 200) {
-      final jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
-      if (jsonResponse['success'] == true) {
-        return jsonResponse['data'];
-      } else {
-        throw Exception(
-            'Failed to load memberships: ${jsonResponse['message']}');
-      }
-    } else {
-      throw Exception(
-          'Failed to load memberships, status code: ${response.statusCode}, body: ${response.body}');
     }
   }
 
@@ -70,10 +51,7 @@ class _HomePageState extends State<HomePage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
+                Navigator.pushReplacementNamed(context, '/login');
               },
               child: const Text('Logout',
                   style: TextStyle(color: Colors.redAccent)),
@@ -99,27 +77,12 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: _getPage(currentPageIndex),
+      body: _buildCustomerList(),
       bottomNavigationBar: CustomBottomNavBar(
-        currentIndex: currentPageIndex,
-        onItemSelected: (index) {
-          setState(() {
-            currentPageIndex = index;
-          });
-        },
+        currentIndex: 0, // Trang Home
+        onItemSelected: (index) {}, // Không cần xử lý vì NavBar tự điều hướng
       ),
     );
-  }
-
-  Widget _getPage(int index) {
-    switch (index) {
-      case 0:
-        return _buildCustomerList();
-      case 1:
-        return MembershipsContent(fetchMemberships: fetchMemberships);
-      default:
-        return _buildCustomerList();
-    }
   }
 
   Widget _buildCustomerList() {
@@ -176,67 +139,6 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                     child: const Text('Detail'),
-                  ),
-                ),
-              );
-            },
-          );
-        }
-      },
-    );
-  }
-}
-
-class MembershipsContent extends StatelessWidget {
-  final Future<List<dynamic>> Function() fetchMemberships;
-
-  const MembershipsContent({super.key, required this.fetchMemberships});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
-      future: fetchMemberships(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-              child: CircularProgressIndicator(color: Colors.green));
-        } else if (snapshot.hasError) {
-          return Center(
-            child: Text('Error: ${snapshot.error}',
-                style: const TextStyle(color: Colors.white)),
-          );
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(
-            child: Text('No memberships found',
-                style: TextStyle(color: Colors.white)),
-          );
-        } else {
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final membership = snapshot.data![index];
-              return Card(
-                color: Colors.black,
-                elevation: 5,
-                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(color: Colors.green)),
-                child: ListTile(
-                  title: Text(membership['name'],
-                      style: const TextStyle(color: Colors.white)),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Type: ${membership['type']}',
-                          style: const TextStyle(color: Colors.white70)),
-                      Text('Description: ${membership['description']}',
-                          style: const TextStyle(color: Colors.white70)),
-                      Text('Price: ${membership['price']} VND',
-                          style: const TextStyle(color: Colors.white70)),
-                      Text('Duration: ${membership['duration']} days',
-                          style: const TextStyle(color: Colors.white70)),
-                    ],
                   ),
                 ),
               );

@@ -1,5 +1,6 @@
 import 'package:amazingym_app/checkin_customer.dart';
 import 'package:amazingym_app/home.dart';
+import 'package:amazingym_app/memberships.dart';
 import 'package:amazingym_app/login.dart';
 import 'package:amazingym_app/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         '/home': (context) => HomePage(),
+        '/memberships': (context) => const MembershipsPage(),
         '/checkin-customers': (context) => CheckinCustomersPage(),
       },
     );
